@@ -1,0 +1,76 @@
+﻿@model IEnumerable<OrderLine>
+@{
+    Layout = null;
+}
+<link href="~/css/site.css" rel="stylesheet" />
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+<h1>Alışveriş Sepeti</h1>
+
+<div class="row mt-5">
+    <div class="col-md-8">
+        <div class="text-left">
+            <h4>Sepetteki Öğeler</h4>
+        </div>
+
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Ürün Adı</th>
+                    <th>Fiyat</th>
+                    <th>Adet</th>
+                    <th>Toplam</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.ProductName</td>
+                        <td>@item.Price.ToString("c")</td>
+                        <td>@item.Quantity</td>
+                        <td>@((item.Quantity * item.Price).ToString("c"))</td>
+                        <td>
+                            <form asp-controller="Cart" asp-action="RemoveFromCart" method="post">
+                                <input type="hidden" name="orderLineId" value="@item.OrderLineId" />
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    Sepetten Çıkar  <i class="fa fa-times fa-fw"></i>
+                                </button>
+                            </form>
+
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+
+
+    </div>
+    <div class="col-md-4">
+
+
+        <div class="text-left">
+            <h4>Sipariş Özeti</h4>
+        </div>
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Sipariş Toplamı</th>
+                    <td>@ViewBag.Total</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="text-center">
+            <a asp-action="Checkout" class="btn btn-primary">
+                <i class="fa fa-arrow-circle-right fa-fw"></i>
+                Onay Aşamasına Git
+            </a>
+        </div>
+
+
+    </div>
+</div>
+
